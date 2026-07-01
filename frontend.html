@@ -38,7 +38,7 @@
       { id: 4, title: "Deploy to staging", status: "done" }
     ];
 
-    // --- Bug area 1: rendering + mark-complete buttons ---------------
+    // --- rendering + mark-complete buttons ---------------
     function renderTasks(taskArray) {
       const list = document.getElementById("taskList");
       list.innerHTML = "";
@@ -60,7 +60,7 @@
       }
     }
 
-    // --- Bug area 2: status filter ------------------------------------
+    // --- status filter ------------------------------------
     document.getElementById("statusFilter").addEventListener("change", function (e) {
       const selected = e.target.value;
       const filtered = tasks.filter(function (t) {
@@ -69,7 +69,7 @@
       renderTasks(filtered);
     });
 
-    // --- Bug area 3: initial load from "server" -----------------------
+    // --- initial load from "server" -----------------------
     function loadTasksFromServer() {
       // Simulates an API call with a delay
       fetch("https://example.com/api/tasks")
