@@ -1,0 +1,84 @@
+<!-- Task 3 - Frontend Debugging Challenge (25 minutes) -->
+<!--
+  This is a small vanilla JS page for the "Task Tracker" app (same theme
+  as Task 2) that lists tasks, lets you mark them complete, and filter
+  by status. It currently has 3 bugs.
+
+  Instructions:
+    1. Find all 3 bugs.
+    2. For each one, write 1-2 sentences explaining WHY it's a bug
+       (not just what the fix is).
+    3. Fix the code.
+
+  You can open this file directly in a browser to see the bugs in action.
+  No build tools / frameworks needed — plain HTML/JS is intentional so
+  the focus stays on fundamentals rather than tooling familiarity.
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Tracker</title>
+</head>
+<body>
+  <h2>Tasks</h2>
+  <select id="statusFilter">
+    <option value="all">All</option>
+    <option value="pending">Pending</option>
+    <option value="done">Done</option>
+  </select>
+
+  <ul id="taskList"></ul>
+
+  <script>
+    const tasks = [
+      { id: 1, title: "Design DB schema", status: "done" },
+      { id: 2, title: "Build API endpoints", status: "pending" },
+      { id: 3, title: "Write unit tests", status: "pending" },
+      { id: 4, title: "Deploy to staging", status: "done" }
+    ];
+
+    // --- Bug area 1: rendering + mark-complete buttons ---------------
+    function renderTasks(taskArray) {
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+
+      for (var i = 0; i < taskArray.length; i++) {
+        const li = document.createElement("li");
+        li.textContent = taskArray[i].title + " [" + taskArray[i].status + "] ";
+
+        const btn = document.createElement("button");
+        btn.textContent = "Mark Done";
+        btn.onclick = function () {
+          // Intended: mark THIS task (taskArray[i]) as done
+          taskArray[i].status = "done";
+          renderTasks(tasks);
+        };
+
+        li.appendChild(btn);
+        list.appendChild(li);
+      }
+    }
+
+    // --- Bug area 2: status filter ------------------------------------
+    document.getElementById("statusFilter").addEventListener("change", function (e) {
+      const selected = e.target.value;
+      const filtered = tasks.filter(function (t) {
+        t.status == selected;
+      });
+      renderTasks(filtered);
+    });
+
+    // --- Bug area 3: initial load from "server" -----------------------
+    function loadTasksFromServer() {
+      // Simulates an API call with a delay
+      fetch("https://example.com/api/tasks")
+        .then(response => response.json());
+
+      renderTasks(tasks); // meant to run only after data arrives
+    }
+
+    loadTasksFromServer();
+  </script>
+</body>
+</html>
